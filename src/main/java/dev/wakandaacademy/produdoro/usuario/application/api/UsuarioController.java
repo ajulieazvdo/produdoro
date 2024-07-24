@@ -38,6 +38,14 @@ public class UsuarioController implements UsuarioAPI {
 		return buscaUsuario;
 	}
 
+	@Override
+	public void mudarStatusParaFoco(String token, UUID idUsuario) {
+		log.info("[inicia] UsuarioController - mudarStatusParaFoco");
+		String email = getUsuarioByToken(token);
+		usuarioAppplicationService.mudarStatusParaFoco(email, idUsuario);
+		log.info("[finaliza] UsuarioController - mudarStatusParaFoco");
+	}
+
 	private String getUsuarioByToken(String token) {
 		log.debug("[token] {}", token);
 		String usuario = tokenService.getUsuarioByBearerToken(token).orElseThrow(() -> APIException.build(HttpStatus.UNAUTHORIZED, token));

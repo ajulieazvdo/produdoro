@@ -26,4 +26,27 @@ class UsuarioApplicationServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    @Test
+    void deveMudarStatusParaFoco() {
+        Usuario usuario = DataHelper.createUsuario();
+
+        when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
+        when(usuarioRepository.buscaUsuarioPorEmail(anyString())).thenReturn(usuario);
+        usuarioService.mudarStatusParaFoco(usuario.getEmail(), usuario.getIdUsuario());
+
+        verify(usuarioRepository, times(1)).salva(usuario);
+    }
+
+    @Test
+    void deveNaoMudarStatusParaFoco_QuandoIdUsuarioForDifenrente() {
+        Usuario usuario = DataHelper.createUsuario();
+        UUID idUsuarioDiferente = UUID.fromString("6b320646-acd0-4f3f-ab65-895c1df31f69");
+
+        when(usuarioRepository.buscaUsuarioPorEmail(anyString())).thenReturn(usuario);
+        APIException e = assertThrows(APIException.class,
+                () -> usuarioService.mudarStatusParaFoco(usuario.getEmail(), idUsuarioDiferente));
+
+        assertEquals(HttpStatus.UNAUTHORIZED, e.getStatusException());
+    }
+
 }

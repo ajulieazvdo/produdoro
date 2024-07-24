@@ -43,4 +43,26 @@ public class Usuario {
 		this.status = StatusUsuario.FOCO;
 		this.configuracao = new ConfiguracaoUsuario(configuracaoPadrao);
 	}
+
+	public void mudarStatusFoco(UUID idUsuario) {
+		pertenceAoUsuario(idUsuario);
+		validaStatusFoco();
+		alteraStatusFoco();
+	}
+
+	private void alteraStatusFoco() {
+		this.status = StatusUsuario.FOCO;
+	}
+
+	private void validaStatusFoco() {
+		if (this.status.equals(StatusUsuario.FOCO)){
+			throw APIException.build(HttpStatus.BAD_REQUEST, "Usuário já está em foco!");
+		}
+	}
+
+	private void pertenceAoUsuario(UUID idUsuario) {
+		if (!this.idUsuario.equals(idUsuario)){
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Credencial de autenticação!");
+		}
+	}
 }

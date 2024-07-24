@@ -27,7 +27,7 @@ class UsuarioApplicationServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Test
-    void deveMudarStatusParaFoco(){
+    void deveMudarStatusParaFoco() {
         Usuario usuario = DataHelper.createUsuario();
 
         when(usuarioRepository.buscaUsuarioPorId(any())).thenReturn(usuario);
@@ -36,8 +36,9 @@ class UsuarioApplicationServiceTest {
 
         verify(usuarioRepository, times(1)).salva(usuario);
     }
+
     @Test
-    void deveNaoMudarStatusParaFoco_QuandoIdUsuarioForDifenrente(){
+    void deveNaoMudarStatusParaFoco_QuandoIdUsuarioForDifenrente() {
         Usuario usuario = DataHelper.createUsuario();
         UUID idUsuarioDiferente = UUID.fromString("6b320646-acd0-4f3f-ab65-895c1df31f69");
 
@@ -47,4 +48,5 @@ class UsuarioApplicationServiceTest {
 
         assertEquals(HttpStatus.UNAUTHORIZED, e.getStatusException());
     }
+
 }
